@@ -15,7 +15,7 @@ namespace Vitals.Editor
         {
             Undo.postprocessModifications -= OnPostProcessModifications;
         }
-        
+
         private UndoPropertyModification[] OnPostProcessModifications(UndoPropertyModification[] modifications)
         {
             foreach (var modification in modifications)

@@ -4,14 +4,20 @@ using UnityEngine.Events;
 
 public class ScoreManager : MonoBehaviour
 {
-    public UnityEvent<string> OnScoreUpdated;
+    public UnityEvent<string> OnScoreBoardUpdated;
 
-    private int score = 0;
+    [SerializeField] private GameSettings gameSettings;
 
-    public void AddScore(int amount)
+    private void OnEnable()
     {
-        score += amount;
-        // Skor güncelleme eventini tetikle
-        OnScoreUpdated?.Invoke(score.ToString("N0"));
+        gameSettings.OnScoreUpdated.AddListener(UpdateScoreBoard);
+    }
+    private void OnDisable()
+    {
+        gameSettings.OnScoreUpdated.RemoveListener(UpdateScoreBoard);
+    }
+    public void UpdateScoreBoard()
+    {
+        OnScoreBoardUpdated?.Invoke(gameSettings.Score.ToString("N0"));
     }
 }

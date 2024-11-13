@@ -4,6 +4,7 @@ using System;
 using UnityEngine.Events;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine.UI;
 
 public class NPCMovement : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class NPCMovement : MonoBehaviour
     private NPCAnimationController animationController;
     private NPCHealthController healthController;
     private bool isMoving = false;
+    [SerializeField] private Slider slider;
 
     private void Awake()
     {
@@ -47,14 +49,28 @@ public class NPCMovement : MonoBehaviour
     }
     public void GoToNewTarget()
     {
-        GolfBall gb = GetOptimalGolfBall();
-        if (gb == null)
+        Transform t = PathCalculateMethod((int)slider.value);
+        if (t == null)
         {
             Debug.Log("topu arabaya getiremeden ölecek.");
             return;
         }
 
-        StartMoving(gb.transform.position);
+        StartMoving(t.position);
+    }
+
+    public Transform PathCalculateMethod(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                return GetOptimalGolfBall();
+            case 1:
+                return SelectFromGreedy();
+
+            default:
+                return null;
+        }
     }
     // Hareket başlatma fonksiyonu
     public void StartMoving(Vector3 target)
@@ -72,7 +88,7 @@ public class NPCMovement : MonoBehaviour
         OnStopMoving?.Invoke();
     }
 
-    public GolfBall GetOptimalGolfBall()
+    public Transform GetOptimalGolfBall()
     {
         GolfBall optimalBall = null;
         float bestScore = float.MinValue;
@@ -97,7 +113,7 @@ public class NPCMovement : MonoBehaviour
                 optimalBall = ball;
             }
         }
-        return optimalBall;
+        return optimalBall.transform;
     }
 
     public float GetHealthLossPerUnitDistance(float movementSpeed)
@@ -123,50 +139,99 @@ public class NPCMovement : MonoBehaviour
         return -1f;
     }
     #region TSP Greedy solution ON TODO
-    // public List<Transform> OptimalPath = new();
+    public List<Transform> OptimalPath = new();
 
-    // [ContextMenu("Greedy")]
-    // public void CalculateGreedyPath()
-    // {
-    //     List<Transform> remainingPoints = new List<Transform>(Spawner.SpawnedObjects.ConvertAll(ball => ball.transform));
-    //     Transform currentPoint = transform;
+    public Transform SelectFromGreedy()
+    {
+        if (OptimalPath.Count > 0)
+            OptimalPath.Clear();
 
-    //     while (remainingPoints.Count > 0)
-    //     {
-    //         Transform closestPoint = null;
-    //         float closestDistance = float.MaxValue;
+        CalculateGreedyPath();
+        Transform t = OptimalPath[0];
+        OptimalPath.RemoveAt(0);
+        return t;
+    }
 
-    //         foreach (Transform point in remainingPoints)
-    //         {
-    //             float distance = Vector3.Distance(currentPoint.position, point.position);
-    //             if (distance < closestDistance)
-    //             {
-    //                 closestDistance = distance;
-    //                 closestPoint = point;
-    //             }
-    //         }
+    public void CalculateGreedyPath()
+    {
+        List<GolfBall> remainingPoints = new List<GolfBall>(Spawner.SpawnedObjects);
 
-    //         if (closestPoint != null)
-    //         {
-    //             OptimalPath.Add(closestPoint);
-    //             remainingPoints.Remove(closestPoint);
-    //             currentPoint = closestPoint;
-    //         }
-    //     }
+        while (remainingPoints.Count > 0)
+        {
 
-    //     OptimalPath.Add(GolfCart.transform);
-    // }
-    // void OnDrawGizmos()
-    // {
-    //     // Listeyi kontrol et
-    //     if (OptimalPath != null && OptimalPath.Count > 1)
-    //     {
-    //         for (int i = 0; i < OptimalPath.Count - 1; i++)
-    //         {
-    //             // Her elemanı bir sonrakine bağla
-    //             Debug.DrawLine(OptimalPath[i].transform.position, OptimalPath[i + 1].transform.position, Color.red);
-    //         }
-    //     }
-    // }
+            GolfBall mostValueableGolfBall = null;
+            float bestScore = float.MinValue;
+
+            foreach (GolfBall golfBall in remainingPoints)
+            {
+                // Topa olan mesafeyi hesapla
+                float totalHealthLoss = TotalHealthLossToPoint(golfBall.transform);
+
+                // Eğer toplam sağlık kaybı mevcut sağlıktan fazlaysa, bu noktayı atla
+                if (totalHealthLoss > healthController.GetCurrentHealth())
+                {
+                    continue;
+                }
+
+
+                float score = golfBall.BallScore / totalHealthLoss;
+
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    mostValueableGolfBall = golfBall;
+                }
+
+
+            }
+            // Eğer hiçbir uygun nokta yoksa golf arabasına dön
+            if (mostValueableGolfBall == null)
+            {
+                Debug.Log("No valid points left to visit. Returning to cart.");
+                OptimalPath.Clear();
+                OptimalPath.Add(GolfCart.transform);
+                return;
+            }
+
+            // Seçilen noktayı rota listesine ekle ve remainingPoints listesinden kaldır
+            Debug.Log($"{mostValueableGolfBall.name}: {bestScore}", mostValueableGolfBall.gameObject);
+
+            OptimalPath.Add(mostValueableGolfBall.transform);
+            remainingPoints.Remove(mostValueableGolfBall);
+        }
+        Debug.Log($"{OptimalPath[0].name}", OptimalPath[0].gameObject);
+
+    }
+
+    private float TotalHealthLossToPoint(Transform point)
+    {
+        float healthLossOnPickUpAnim = animationController.GetTimeAnimationClip("Picking Up") * healthController.GetDrainRate();
+        float healthLossOnDropAnim = animationController.GetTimeAnimationClip("Drop") * healthController.GetDrainRate();
+        float healthLossPerUnitDistance = GetHealthLossPerUnitDistance(moveSpeed);
+
+        float distanceToPoint = GetPathDistance(transform.position, point.position);
+        float healthLossToBall = distanceToPoint * healthLossPerUnitDistance + healthLossOnPickUpAnim;
+
+        // Topu aldıktan sonra golf arabasına dönüş mesafesini hesapla
+        float distanceToCart = GetPathDistance(point.position, GolfCart.transform.position);
+        float healthLossToCart = distanceToCart * healthLossPerUnitDistance + healthLossOnDropAnim;
+
+        // Toplam sağlık kaybını hesapla
+        float totalHealthLoss = healthLossToBall + healthLossToCart;
+        return totalHealthLoss;
+    }
+
+    void OnDrawGizmos()
+    {
+        // Listeyi kontrol et
+        if (OptimalPath != null && OptimalPath.Count > 1)
+        {
+            for (int i = 0; i < OptimalPath.Count - 1; i++)
+            {
+                // Her elemanı bir sonrakine bağla
+                Debug.DrawLine(OptimalPath[i].transform.position, OptimalPath[i + 1].transform.position, Color.red);
+            }
+        }
+    }
     #endregion
 }

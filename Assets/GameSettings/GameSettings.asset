@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23e3694e1adf47ed847ab2a1deeba881, type: 3}
-  m_Name: CharacterHealth
+  m_Script: {fileID: 11500000, guid: 91586fe55d8463f4b9f5f2a535da87b4, type: 3}
+  m_Name: GameSettings
   m_EditorClassIdentifier: 
-  maxValue: 100
-  value: 20
+  OnScoreUpdated:
+    m_PersistentCalls:
+      m_Calls: []
+  Score: 0

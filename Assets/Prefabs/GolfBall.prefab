@@ -4934,6 +4934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballTier: 0
+  gameSettings: {fileID: 11400000, guid: e0c1f9ba151a49e43bd30b7f0ba49eaf, type: 2}
   Spawner: {fileID: 0}
   BallScore: 0
   OnBallPickUp:

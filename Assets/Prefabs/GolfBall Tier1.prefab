@@ -149,7 +149,7 @@ PrefabInstance:
     - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
         type: 3}
       propertyPath: BallScore
-      value: 15
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 2435763505931407141, guid: febc4981a178235458c98514cdf14f24,
         type: 3}
