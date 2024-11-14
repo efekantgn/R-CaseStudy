@@ -143,23 +143,22 @@ public class NPCMovement : MonoBehaviour
 
     public void CalculateGreedyPath()
     {
-        List<GolfBall> remainingPoints = new List<GolfBall>(Spawner.SpawnedObjects);
+        List<GolfBall> remainingGolfBalls = new List<GolfBall>(Spawner.SpawnedObjects);
         float currentHealth = healthController.GetCurrentHealth();
 
-        while (remainingPoints.Count > 0)
+        while (remainingGolfBalls.Count > 0)
         {
             GolfBall mostValuableGolfBall = null;
             float bestScore = float.MinValue;
 
-            foreach (GolfBall golfBall in remainingPoints)
+            foreach (GolfBall golfBall in remainingGolfBalls)
             {
                 float totalHealthLoss = TotalHealthLossToPoint(golfBall.transform);
                 if (totalHealthLoss == float.MaxValue) continue;
 
                 float healthAfterPickup = currentHealth - totalHealthLoss;
-                float healthNeededForReturn = TotalHealthLossToPoint(GolfCart.transform);
 
-                if (healthAfterPickup <= 0 || healthAfterPickup < healthNeededForReturn)
+                if (healthAfterPickup < 0)
                 {
                     Debug.Log($"Skipping {golfBall.name} due to insufficient health.");
                     continue;
@@ -182,7 +181,7 @@ public class NPCMovement : MonoBehaviour
 
             OptimalPath.Add(mostValuableGolfBall.transform);
             currentHealth -= TotalHealthLossToPoint(mostValuableGolfBall.transform);
-            remainingPoints.Remove(mostValuableGolfBall);
+            remainingGolfBalls.Remove(mostValuableGolfBall);
         }
 
         OptimalPath.Add(GolfCart.transform);
