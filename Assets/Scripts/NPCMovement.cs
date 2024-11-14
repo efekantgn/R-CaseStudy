@@ -19,7 +19,6 @@ public class NPCMovement : MonoBehaviour
     private NPCAnimationController animationController;
     private NPCHealthController healthController;
     private bool isMoving = false;
-    [SerializeField] private Slider slider;
 
     private void Awake()
     {
@@ -49,29 +48,15 @@ public class NPCMovement : MonoBehaviour
     }
     public void GoToNewTarget()
     {
-        Transform t = PathCalculateMethod((int)slider.value);
+        Transform t = SelectFromGreedy();
         if (t == null)
         {
-            Debug.Log("topu arabaya getiremeden ölecek.");
             return;
         }
 
         StartMoving(t.position);
     }
 
-    public Transform PathCalculateMethod(int value)
-    {
-        switch (value)
-        {
-            case 0:
-                return GetOptimalGolfBall();
-            case 1:
-                return SelectFromGreedy();
-
-            default:
-                return null;
-        }
-    }
     // Hareket başlatma fonksiyonu
     public void StartMoving(Vector3 target)
     {

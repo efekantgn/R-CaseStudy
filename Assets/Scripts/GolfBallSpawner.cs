@@ -48,7 +48,7 @@ public class GolfBallSpawner : MonoBehaviour
                 float terrainHeight = terrain.SampleHeight(spawnPosition);
                 spawnPosition.y = terrainHeight;
             }
-            GolfBall gb = Instantiate(prefab, spawnPosition, Quaternion.identity);
+            GolfBall gb = Instantiate(prefab, spawnPosition, Quaternion.identity, spawnOrigin);
             gb.Spawner = this;
             SpawnedObjects.Add(gb);
         }
