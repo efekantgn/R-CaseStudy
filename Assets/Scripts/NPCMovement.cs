@@ -30,8 +30,8 @@ public class NPCMovement : MonoBehaviour
     void Start()
     {
         navMeshAgent.speed = moveSpeed;
-
     }
+
 
     void Update()
     {
@@ -109,6 +109,8 @@ public class NPCMovement : MonoBehaviour
     float GetPathDistance(Vector3 startPoint, Vector3 endPoint)
     {
         NavMeshPath path = new NavMeshPath();
+
+
         if (NavMesh.CalculatePath(startPoint, endPoint, NavMesh.AllAreas, path))
         {
             if (path.status == NavMeshPathStatus.PathComplete)
@@ -121,6 +123,7 @@ public class NPCMovement : MonoBehaviour
                 return totalDistance;
             }
         }
+
         return -1f;
     }
     #region TSP Greedy solution ON TODO
@@ -132,6 +135,7 @@ public class NPCMovement : MonoBehaviour
             OptimalPath.Clear();
 
         CalculateGreedyPath();
+        Debug.Log("a");
         Transform t = OptimalPath[0];
         OptimalPath.RemoveAt(0);
         return t;
@@ -140,71 +144,73 @@ public class NPCMovement : MonoBehaviour
     public void CalculateGreedyPath()
     {
         List<GolfBall> remainingPoints = new List<GolfBall>(Spawner.SpawnedObjects);
+        float currentHealth = healthController.GetCurrentHealth();
 
         while (remainingPoints.Count > 0)
         {
-
-            GolfBall mostValueableGolfBall = null;
+            GolfBall mostValuableGolfBall = null;
             float bestScore = float.MinValue;
 
             foreach (GolfBall golfBall in remainingPoints)
             {
-                // Topa olan mesafeyi hesapla
                 float totalHealthLoss = TotalHealthLossToPoint(golfBall.transform);
+                if (totalHealthLoss == float.MaxValue) continue;
 
-                // Eğer toplam sağlık kaybı mevcut sağlıktan fazlaysa, bu noktayı atla
-                if (totalHealthLoss > healthController.GetCurrentHealth())
+                float healthAfterPickup = currentHealth - totalHealthLoss;
+                float healthNeededForReturn = TotalHealthLossToPoint(GolfCart.transform);
+
+                if (healthAfterPickup <= 0 || healthAfterPickup < healthNeededForReturn)
                 {
+                    Debug.Log($"Skipping {golfBall.name} due to insufficient health.");
                     continue;
                 }
 
-
                 float score = golfBall.BallScore / totalHealthLoss;
-
                 if (score > bestScore)
                 {
                     bestScore = score;
-                    mostValueableGolfBall = golfBall;
+                    mostValuableGolfBall = golfBall;
                 }
-
-
             }
-            // Eğer hiçbir uygun nokta yoksa golf arabasına dön
-            if (mostValueableGolfBall == null)
+
+            if (mostValuableGolfBall == null)
             {
                 Debug.Log("No valid points left to visit. Returning to cart.");
-                OptimalPath.Clear();
                 OptimalPath.Add(GolfCart.transform);
                 return;
             }
 
-            // Seçilen noktayı rota listesine ekle ve remainingPoints listesinden kaldır
-            Debug.Log($"{mostValueableGolfBall.name}: {bestScore}", mostValueableGolfBall.gameObject);
-
-            OptimalPath.Add(mostValueableGolfBall.transform);
-            remainingPoints.Remove(mostValueableGolfBall);
+            OptimalPath.Add(mostValuableGolfBall.transform);
+            currentHealth -= TotalHealthLossToPoint(mostValuableGolfBall.transform);
+            remainingPoints.Remove(mostValuableGolfBall);
         }
-        Debug.Log($"{OptimalPath[0].name}", OptimalPath[0].gameObject);
 
+        OptimalPath.Add(GolfCart.transform);
     }
 
-    private float TotalHealthLossToPoint(Transform point)
+
+
+    float TotalHealthLossToPoint(Transform point)
     {
         float healthLossOnPickUpAnim = animationController.GetTimeAnimationClip("Picking Up") * healthController.GetDrainRate();
         float healthLossOnDropAnim = animationController.GetTimeAnimationClip("Drop") * healthController.GetDrainRate();
         float healthLossPerUnitDistance = GetHealthLossPerUnitDistance(moveSpeed);
 
+        // Topa ulaşma mesafesi
         float distanceToPoint = GetPathDistance(transform.position, point.position);
+        if (distanceToPoint == float.MaxValue) return float.MaxValue;
+
         float healthLossToBall = distanceToPoint * healthLossPerUnitDistance + healthLossOnPickUpAnim;
 
-        // Topu aldıktan sonra golf arabasına dönüş mesafesini hesapla
+        // Arabaya dönüş mesafesi
         float distanceToCart = GetPathDistance(point.position, GolfCart.transform.position);
+        if (distanceToCart == float.MaxValue) return float.MaxValue;
+
         float healthLossToCart = distanceToCart * healthLossPerUnitDistance + healthLossOnDropAnim;
 
-        // Toplam sağlık kaybını hesapla
-        float totalHealthLoss = healthLossToBall + healthLossToCart;
-        return totalHealthLoss;
+        return healthLossToBall + healthLossToCart;
     }
+
 
     void OnDrawGizmos()
     {
@@ -214,7 +220,8 @@ public class NPCMovement : MonoBehaviour
             for (int i = 0; i < OptimalPath.Count - 1; i++)
             {
                 // Her elemanı bir sonrakine bağla
-                Debug.DrawLine(OptimalPath[i].transform.position, OptimalPath[i + 1].transform.position, Color.red);
+                if (OptimalPath[i] != null)
+                    Debug.DrawLine(OptimalPath[i].transform.position, OptimalPath[i + 1].transform.position, Color.red);
             }
         }
     }
