@@ -3,6 +3,10 @@
         <strong>Game Video:</strong> 
         <a href="https://www.youtube.com/watch?v=lvfPgRUt_Lw" target="_blank">Watch on YouTube</a>
     </p>
+<h2>Play Itr</h1>
+    <p>
+        You can play from Assets/Build/R-DemoTask.exe
+    </p>
 
 <h2>Optimal Path Algorithm</h2>
     <p>
