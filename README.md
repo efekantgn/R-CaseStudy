@@ -1,7 +1,7 @@
 <h1>Golf Course NPC Ball Collector</h1>
     <p>
         <strong>Game Video:</strong> 
-        <a href="[https://youtu.be/yl00JsuNTPU](https://www.youtube.com/watch?v=lvfPgRUt_Lw)" target="_blank">Watch on YouTube</a>
+        <a href="https://www.youtube.com/watch?v=lvfPgRUt_Lw" target="_blank">Watch on YouTube</a>
     </p>
 
 <h2>Optimal Path Algorithm</h2>
