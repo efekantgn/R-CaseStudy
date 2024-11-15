@@ -37,6 +37,14 @@ public class GolfBallSpawner : MonoBehaviour
         SpawnGolfBalls(tier3Prefab, tier3Count, tier3MinDistance, tier3MaxDistance);
     }
 
+    /// <summary>
+    /// Spawns a specified number of golf balls at random positions within a given distance range.
+    /// Each golf ball is placed on the terrain surface with the correct height adjustment.
+    /// </summary>
+    /// <param name="prefab">The golf ball prefab to instantiate.</param>
+    /// <param name="count">The number of golf balls to spawn.</param>
+    /// <param name="minDistance">The minimum distance for the spawn position.</param>
+    /// <param name="maxDistance">The maximum distance for the spawn position.</param>
     void SpawnGolfBalls(GolfBall prefab, int count, float minDistance, float maxDistance)
     {
         for (int i = 0; i < count; i++)
@@ -53,7 +61,14 @@ public class GolfBallSpawner : MonoBehaviour
             SpawnedObjects.Add(gb);
         }
     }
-
+    /// <summary>
+    /// Generates a random position within a specified arc range at a random distance.
+    /// The position is calculated in a 2D plane (X and Z axes) based on the spawn angle and distance range,
+    /// then transformed into the world coordinate system.
+    /// </summary>
+    /// <param name="minDistance">The minimum distance from the spawn origin for the random position.</param>
+    /// <param name="maxDistance">The maximum distance from the spawn origin for the random position.</param>
+    /// <returns>A random position within the specified arc and distance range.</returns>
     Vector3 GetRandomPositionInArc(float minDistance, float maxDistance)
     {
         float angle = Random.Range(-spawnAngle / 2f, spawnAngle / 2f);
