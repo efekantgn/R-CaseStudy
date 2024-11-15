@@ -30,7 +30,7 @@ public class GolfBallSpawner : MonoBehaviour
 
     public List<GolfBall> SpawnedObjects = new List<GolfBall>();
 
-    void Start()
+    public void SpawnBalls()
     {
         SpawnGolfBalls(tier1Prefab, tier1Count, tier1MinDistance, tier1MaxDistance);
         SpawnGolfBalls(tier2Prefab, tier2Count, tier2MinDistance, tier2MaxDistance);

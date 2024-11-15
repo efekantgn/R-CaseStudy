@@ -35,4 +35,5 @@ public class GolfBall : MonoBehaviour
         gameSettings.OnScoreUpdated?.Invoke();
 
     }
+
 }

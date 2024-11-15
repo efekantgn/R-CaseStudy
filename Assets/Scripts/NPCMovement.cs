@@ -14,6 +14,8 @@ public class NPCMovement : MonoBehaviour
     public GolfBallSpawner Spawner;
     public UnityEvent OnStartMoving;
     public UnityEvent OnStopMoving;
+    public List<Transform> OptimalPath = new();
+
 
     private NavMeshAgent navMeshAgent;
     private NPCAnimationController animationController;
@@ -32,7 +34,6 @@ public class NPCMovement : MonoBehaviour
         navMeshAgent.speed = moveSpeed;
     }
 
-
     void Update()
     {
         if (isMoving && !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
@@ -41,7 +42,6 @@ public class NPCMovement : MonoBehaviour
         }
     }
 
-    [ContextMenu("GoCart")]
     public void GoToGolfCart()
     {
         StartMoving(GolfCart.transform.position);
@@ -53,7 +53,6 @@ public class NPCMovement : MonoBehaviour
         {
             return;
         }
-
         StartMoving(t.position);
     }
 
@@ -94,8 +93,6 @@ public class NPCMovement : MonoBehaviour
 
         return float.MinValue;
     }
-    #region TSP Greedy solution ON TODO
-    public List<Transform> OptimalPath = new();
 
     public Transform SelectFromGreedy()
     {
@@ -126,11 +123,9 @@ public class NPCMovement : MonoBehaviour
             foreach (GolfBall golfBall in remainingGolfBalls)
             {
                 float distanceToBall = GetPathDistance(transform.position, golfBall.transform.position);
-                Debug.Log($"{gameObject.name}-{golfBall.name} distance:{distanceToBall}", golfBall);
                 float healthLossOnDistanceToBall = healthLossPerUnitDistance * distanceToBall;
 
                 float distancePlayerToCart = GetPathDistance(golfBall.transform.position, GolfCart.transform.position);
-                Debug.Log($"{golfBall.name}-{GolfCart.name} distance:{distancePlayerToCart}", GolfCart);
                 if (distancePlayerToCart == float.MinValue)
                 {
                     continue;
@@ -160,13 +155,9 @@ public class NPCMovement : MonoBehaviour
             {
                 remainingGolfBalls.Remove(mostValuableTransform);
                 OptimalPath.Add(mostValuableTransform.transform);
-
             }
-
         }
     }
-
-
 
     float TotalHealthLossToPoint(Transform point)
     {
@@ -185,19 +176,4 @@ public class NPCMovement : MonoBehaviour
 
         return healthLossToBall + healthLossToCart;
     }
-
-    void OnDrawGizmos()
-    {
-        // Listeyi kontrol et
-        if (OptimalPath != null && OptimalPath.Count > 1)
-        {
-            for (int i = 0; i < OptimalPath.Count - 1; i++)
-            {
-                // Her elemanı bir sonrakine bağla
-                if (OptimalPath[i] != null)
-                    Debug.DrawLine(OptimalPath[i].transform.position, OptimalPath[i + 1].transform.position, Color.red);
-            }
-        }
-    }
-    #endregion
 }
