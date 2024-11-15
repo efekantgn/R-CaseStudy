@@ -3,7 +3,7 @@
         <strong>Game Video:</strong> 
         <a href="https://www.youtube.com/watch?v=lvfPgRUt_Lw" target="_blank">Watch on YouTube</a>
     </p>
-<h2>Play Itr</h1>
+<h2>Play It</h1>
     <p>
         You can play from Assets/Build/R-DemoTask.exe
     </p>
