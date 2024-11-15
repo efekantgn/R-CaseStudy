@@ -16,7 +16,6 @@ public class ScoreManager : MonoBehaviour
     private void OnDisable()
     {
         gameSettings.OnScoreUpdated.RemoveListener(OnScoreUpdated);
-
     }
 
     private void OnScoreUpdated()

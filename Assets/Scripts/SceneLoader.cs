@@ -3,6 +3,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
+/// <summary>
+/// A Unity MonoBehaviour class that handles scene loading and unloading with a fade transition effect.
+/// It listens for scene load and app quit requests via an event channel and provides functionality to
+/// load new scenes with fade transitions and unload old scenes, keeping only the necessary scenes.
+/// </summary>
 public class SceneLoader : MonoBehaviour
 {
     [Header("Scene Event Channels")]

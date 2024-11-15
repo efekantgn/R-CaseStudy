@@ -22,11 +22,16 @@ public class GolfBall : MonoBehaviour
     public void DestroyOnPickup()
     {
         UpdateScoreBoard();
+        PlayTextEffect();
+        Destroy(gameObject, .3f);
+        Spawner.SpawnedObjects.Remove(this);
+    }
+
+    private void PlayTextEffect()
+    {
         TextEffect3DController te3d = Instantiate(effectPrefab, transform.position, transform.rotation);
         te3d.gameObject.transform.SetParent(null);
         te3d.SetText(BallScore.ToString());
-        Destroy(gameObject, .3f);
-        Spawner.SpawnedObjects.Remove(this);
     }
 
     private void UpdateScoreBoard()
