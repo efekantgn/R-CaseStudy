@@ -56,7 +56,6 @@ public class NPCMovement : MonoBehaviour
         StartMoving(t.position);
     }
 
-    // Hareket başlatma fonksiyonu
     public void StartMoving(Vector3 target)
     {
         navMeshAgent.SetDestination(target);
@@ -64,7 +63,6 @@ public class NPCMovement : MonoBehaviour
         OnStartMoving?.Invoke();
     }
 
-    // Hareket durdurma fonksiyonu
     public void StopMoving()
     {
         navMeshAgent.ResetPath();
@@ -72,11 +70,25 @@ public class NPCMovement : MonoBehaviour
         OnStopMoving?.Invoke();
     }
 
+    /// <summary>
+    /// Calculates the rate of health loss per unit distance traveled based on the movement speed.
+    /// The health loss is determined by the drain rate from the health controller and the movement speed.
+    /// </summary>
+    /// <param name="movementSpeed">The movement speed of the character or entity.</param>
+    /// <returns>The amount of health lost per unit distance traveled.</returns>
     public float GetHealthLossPerUnitDistance(float movementSpeed)
     {
         return healthController.GetDrainRate() / movementSpeed;
     }
 
+    /// <summary>
+    /// Calculates the total path distance between two points using the NavMesh system.
+    /// The function calculates the path from the start point to the end point and sums the distances
+    /// between each corner of the calculated path to determine the total distance.
+    /// </summary>
+    /// <param name="startPoint">The starting point of the path.</param>
+    /// <param name="endPoint">The destination point of the path.</param>
+    /// <returns>The total distance of the calculated path, or <c>float.MinValue</c> if no valid path is found.</returns>
     float GetPathDistance(Vector3 startPoint, Vector3 endPoint)
     {
         NavMeshPath path = new NavMeshPath();
@@ -106,6 +118,12 @@ public class NPCMovement : MonoBehaviour
         return t;
     }
 
+    /// <summary>
+    /// Calculates the optimal path for picking up and delivering golf balls using a greedy algorithm.
+    /// The function evaluates each remaining golf ball based on the distance and health cost to the player,
+    /// selecting the ball with the best score (highest value-to-distance ratio). It continues until all balls are collected
+    /// or the player cannot afford the health cost to pick up and deliver a ball.
+    /// </summary>
     public void CalculateGreedyPath()
     {
         List<GolfBall> remainingGolfBalls = new List<GolfBall>(Spawner.SpawnedObjects);
@@ -157,23 +175,5 @@ public class NPCMovement : MonoBehaviour
                 OptimalPath.Add(mostValuableTransform.transform);
             }
         }
-    }
-
-    float TotalHealthLossToPoint(Transform point)
-    {
-        float healthLossOnPickUpAnim = animationController.GetTimeAnimationClip("Picking Up") * healthController.GetDrainRate();
-        float healthLossOnDropAnim = animationController.GetTimeAnimationClip("Drop") * healthController.GetDrainRate();
-        float healthLossPerUnitDistance = GetHealthLossPerUnitDistance(moveSpeed);
-        // Topa ulaşma mesafesi
-        float distanceToPoint = GetPathDistance(transform.position, point.position);
-
-        float healthLossToBall = distanceToPoint * healthLossPerUnitDistance + healthLossOnPickUpAnim;
-
-        // Arabaya dönüş mesafesi
-        float distanceToCart = GetPathDistance(point.position, GolfCart.transform.position);
-
-        float healthLossToCart = distanceToCart * healthLossPerUnitDistance + healthLossOnDropAnim;
-
-        return healthLossToBall + healthLossToCart;
     }
 }
