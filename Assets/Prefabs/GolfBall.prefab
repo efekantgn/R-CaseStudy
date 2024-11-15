@@ -4935,23 +4935,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballTier: 0
   gameSettings: {fileID: 11400000, guid: e0c1f9ba151a49e43bd30b7f0ba49eaf, type: 2}
+  effectPrefab: {fileID: 135501486328805467, guid: e85c48fd54a5de340bb693bc20da4e58,
+    type: 3}
   Spawner: {fileID: 0}
   BallScore: 0
   OnBallPickUp:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8749149906710579828}
-        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
-        m_MethodName: Play
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!135 &5805599266770728257
 SphereCollider:
   m_ObjectHideFlags: 0

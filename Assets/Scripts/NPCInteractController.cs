@@ -13,6 +13,7 @@ public class NPCInteractController : MonoBehaviour
         animationController = GetComponent<NPCAnimationController>();
         movement = GetComponent<NPCMovement>();
     }
+
     public void IsStopOnInteractable()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, interactionRadius);
@@ -20,14 +21,12 @@ public class NPCInteractController : MonoBehaviour
         {
             if (item.TryGetComponent(out GolfBall golfBall))
             {
-                //NPCanim.Setbool pickup;
                 animationController.SetPickUpTrue();
                 collectedBallScore = golfBall.BallScore;
                 return;
             }
             else if (item.TryGetComponent(out GolfCart golfCart))
             {
-
                 animationController.SetDropTrue();
                 return;
             }
@@ -78,7 +77,6 @@ public class NPCInteractController : MonoBehaviour
             }
         }
 
-        float nearestDistance = minDistance;
         return closest;
     }
 }

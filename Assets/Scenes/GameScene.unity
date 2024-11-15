@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18382147, g: 0.22848645, b: 0.3003414, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000002, guid: 3f30613982b00af41b027443dc62456a,
+    type: 2}
   m_LightingSettings: {fileID: 55064143}
 --- !u!196 &4
 NavMeshSettings:
@@ -382,7 +383,6 @@ GameObject:
   m_Component:
   - component: {fileID: 183020969}
   - component: {fileID: 183020972}
-  - component: {fileID: 183020973}
   - component: {fileID: 183020974}
   m_Layer: 0
   m_Name: cm
@@ -418,19 +418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &183020973
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 183020968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4c41ac9245b87c4192012080077d830, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Damping: 0
 --- !u!114 &183020974
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -443,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ad980451443d70438faac0bc6c235a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TrackedObjectOffset: {x: 0, y: 1.49, z: 0}
+  m_TrackedObjectOffset: {x: 0, y: 1.1, z: 0}
   m_LookaheadTime: 0
   m_LookaheadSmoothing: 0
   m_LookaheadIgnoreY: 0
@@ -453,7 +440,7 @@ MonoBehaviour:
   m_TargetMovementOnly: 1
   m_ScreenX: 0.5
   m_ScreenY: 0.5
-  m_CameraDistance: 2.8
+  m_CameraDistance: 4.06
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
   m_DeadZoneDepth: 0
@@ -816,8 +803,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.57707393, y: 0, z: 0, w: 0.81669194}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.23943606, y: 0.56287485, z: -0.17709258, w: 0.77102566}
+  m_LocalPosition: {x: 47.039196, y: 27.093166, z: -34.413845}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1332,7 +1319,7 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_UseGeometry: 0
+  m_UseGeometry: 1
   m_DefaultArea: 0
   m_GenerateLinks: 0
   m_IgnoreNavMeshAgent: 1
@@ -1340,7 +1327,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 1cfee3fc4999ba74da0fcfe3996ed352, type: 2}
   m_BuildHeightMesh: 0
@@ -1777,8 +1764,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1360351411}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.006923776, y: -0.23828247, z: 0.00070488453, w: -0.971171}
-  m_LocalPosition: {x: 61.821075, y: 19.77845, z: -43.792236}
+  m_LocalRotation: {x: 0.1943431, y: 0.49634433, z: -0.11712, w: 0.8379475}
+  m_LocalPosition: {x: 59.922764, y: 21.144258, z: -43.068466}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2176,7 +2163,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
@@ -2499,11 +2486,11 @@ MonoBehaviour:
   tier1Count: 10
   tier2Count: 10
   tier3Count: 10
-  tier1MinDistance: 3
+  tier1MinDistance: 5
   tier1MaxDistance: 20
-  tier2MinDistance: 3
+  tier2MinDistance: 5
   tier2MaxDistance: 20
-  tier3MinDistance: 3
+  tier3MinDistance: 5
   tier3MaxDistance: 20
   spawnOrigin: {fileID: 365321830}
   spawnAngle: 360
@@ -2857,8 +2844,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996341053}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.29245234, y: 0.23388842, z: -0.075740054, w: -0.9241381}
-  m_LocalPosition: {x: 61.821075, y: 19.77845, z: -43.792236}
+  m_LocalRotation: {x: 0.1943431, y: 0.49634433, z: -0.11712, w: 0.8379475}
+  m_LocalPosition: {x: 59.922764, y: 21.144258, z: -43.068466}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2876,17 +2863,17 @@ PrefabInstance:
     - target: {fileID: 1765032531970712854, guid: 0d61246f7c8dbd944841a9283ca86b06,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 74.45
+      value: 73.2
       objectReference: {fileID: 0}
     - target: {fileID: 1765032531970712854, guid: 0d61246f7c8dbd944841a9283ca86b06,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 17.74
+      value: 17.67
       objectReference: {fileID: 0}
     - target: {fileID: 1765032531970712854, guid: 0d61246f7c8dbd944841a9283ca86b06,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -25.29
+      value: -25.88
       objectReference: {fileID: 0}
     - target: {fileID: 1765032531970712854, guid: 0d61246f7c8dbd944841a9283ca86b06,
         type: 3}
@@ -2928,6 +2915,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Golf Cart
       objectReference: {fileID: 0}
+    - target: {fileID: 7746577380624799273, guid: 0d61246f7c8dbd944841a9283ca86b06,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2941,6 +2933,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2391406398597785, guid: b48cf14861e29fe4294ae8232721762d, type: 3}
+      propertyPath: _cameraTransform
+      value: 
+      objectReference: {fileID: 1360351416}
     - target: {fileID: 242453547955490337, guid: b48cf14861e29fe4294ae8232721762d,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -3061,6 +3057,11 @@ PrefabInstance:
       propertyPath: GolfCart
       value: 
       objectReference: {fileID: 365321831}
+    - target: {fileID: 3784750898307129447, guid: b48cf14861e29fe4294ae8232721762d,
+        type: 3}
+      propertyPath: criticalHealth
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 3784750898307129447, guid: b48cf14861e29fe4294ae8232721762d,
         type: 3}
       propertyPath: OnStartMoving.m_PersistentCalls.m_Calls.Array.size
@@ -3190,11 +3191,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_BaseOffset
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6959077194246866575, guid: b48cf14861e29fe4294ae8232721762d,
-        type: 3}
-      propertyPath: m_StoppingDistance
-      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7954865068732124994, guid: b48cf14861e29fe4294ae8232721762d, type: 3}

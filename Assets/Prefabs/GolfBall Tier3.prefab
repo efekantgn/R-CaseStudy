@@ -68,6 +68,66 @@ PrefabInstance:
       propertyPath: BallScore
       value: 1200
       objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TextEffect3DController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: TextEffect3DController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5034049706778731855, guid: febc4981a178235458c98514cdf14f24,
         type: 3}
       propertyPath: m_Name

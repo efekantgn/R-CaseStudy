@@ -151,6 +151,56 @@ PrefabInstance:
       propertyPath: BallScore
       value: 1000
       objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_text
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: PlayEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: TMPro.TMP_Text, Unity.TextMeshPro
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: TextEffect3DController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 825053613655643723, guid: febc4981a178235458c98514cdf14f24,
+        type: 3}
+      propertyPath: OnBallPickUp.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2435763505931407141, guid: febc4981a178235458c98514cdf14f24,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

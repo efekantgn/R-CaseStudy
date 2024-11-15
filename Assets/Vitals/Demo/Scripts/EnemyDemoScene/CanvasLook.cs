@@ -6,11 +6,13 @@ namespace Vitals
 {
     public class CanvasLook : MonoBehaviour
     {
-        private Transform _cameraTransform;
+        [SerializeField] private Transform _cameraTransform;
 
         private void Awake()
         {
-            _cameraTransform = Camera.main.transform;
+            if (_cameraTransform == null)
+                _cameraTransform = Camera.main.transform;
+
         }
         void Update()
         {

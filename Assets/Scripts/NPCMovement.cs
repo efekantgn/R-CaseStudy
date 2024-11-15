@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class NPCMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 3.5f;
-    [SerializeField] private float carrySpeed = 2.5f;
+    [SerializeField] private float criticalHealth = 5;
     public GolfCart GolfCart;
     public GolfBallSpawner Spawner;
     public UnityEvent OnStartMoving;
@@ -84,7 +84,7 @@ public class NPCMovement : MonoBehaviour
         {
             float healthLossToBall = GetPathDistance(transform.position, ball.transform.position) * GetHealthLossPerUnitDistance(moveSpeed);
 
-            float healthLossToCart = GetPathDistance(ball.transform.position, GolfCart.transform.position) * GetHealthLossPerUnitDistance(carrySpeed);
+            float healthLossToCart = GetPathDistance(ball.transform.position, GolfCart.transform.position) * GetHealthLossPerUnitDistance(moveSpeed);
 
             float totalHealthLoss = healthLossToBall + healthLossToCart + healthLossOnDropAnim + healthLossOnPickUpAnim;
 
@@ -110,21 +110,17 @@ public class NPCMovement : MonoBehaviour
     {
         NavMeshPath path = new NavMeshPath();
 
-
         if (NavMesh.CalculatePath(startPoint, endPoint, NavMesh.AllAreas, path))
         {
-            if (path.status == NavMeshPathStatus.PathComplete)
+            float totalDistance = Vector3.Distance(startPoint, path.corners[0]);
+            for (int i = 1; i < path.corners.Length; i++)
             {
-                float totalDistance = 0f;
-                for (int i = 1; i < path.corners.Length; i++)
-                {
-                    totalDistance += Vector3.Distance(path.corners[i - 1], path.corners[i]);
-                }
-                return totalDistance;
+                totalDistance += Vector3.Distance(path.corners[i - 1], path.corners[i]);
             }
+            return totalDistance;
         }
 
-        return -1f;
+        return float.MinValue;
     }
     #region TSP Greedy solution ON TODO
     public List<Transform> OptimalPath = new();
@@ -137,7 +133,7 @@ public class NPCMovement : MonoBehaviour
         CalculateGreedyPath();
         Transform t = OptimalPath[0];
         OptimalPath.RemoveAt(0);
-        Debug.Log("t:" + t);
+        Debug.Log("t:" + t, t);
         return t;
     }
 
@@ -145,41 +141,55 @@ public class NPCMovement : MonoBehaviour
     {
         List<GolfBall> remainingGolfBalls = new List<GolfBall>(Spawner.SpawnedObjects);
 
+        float healthLossOnPickUpAnim = animationController.GetTimeAnimationClip("Picking Up") * healthController.GetDrainRate();
+        float healthLossOnDropAnim = animationController.GetTimeAnimationClip("Drop") * healthController.GetDrainRate();
+        float healthLossPerUnitDistance = GetHealthLossPerUnitDistance(moveSpeed);
 
         while (remainingGolfBalls.Count > 0)
         {
-            Transform mostValuableTransform = null;
+
+            GolfBall mostValuableTransform = null;
             float bestScore = float.MinValue;
 
             foreach (GolfBall golfBall in remainingGolfBalls)
             {
-                float totalHealthLoss = TotalHealthLossToPoint(golfBall.transform);
-                float healthAfterPickup = healthController.GetCurrentHealth() - totalHealthLoss;
-                if (healthAfterPickup < 0)
+                float distanceToBall = GetPathDistance(transform.position, golfBall.transform.position);
+                Debug.Log($"{gameObject.name}-{golfBall.name} distance:{distanceToBall}", golfBall);
+                float healthLossOnDistanceToBall = healthLossPerUnitDistance * distanceToBall;
+
+                float distancePlayerToCart = GetPathDistance(golfBall.transform.position, GolfCart.transform.position);
+                Debug.Log($"{golfBall.name}-{GolfCart.name} distance:{distancePlayerToCart}", GolfCart);
+                if (distancePlayerToCart == float.MinValue)
                 {
                     continue;
                 }
+                float healthLossOnDistancePlayerToCart = healthLossPerUnitDistance * distancePlayerToCart + healthLossOnPickUpAnim + healthLossOnDropAnim + criticalHealth + healthLossOnDistanceToBall;
 
-                float score = golfBall.BallScore / totalHealthLoss;
+                if (healthLossOnDistancePlayerToCart > healthController.GetCurrentHealth())
+                {
+                    continue;
+                }
+                float totalDistance = distancePlayerToCart + distanceToBall;
+
+                float score = golfBall.BallScore / totalDistance;
                 if (score > bestScore)
                 {
                     bestScore = score;
-                    mostValuableTransform = golfBall.transform;
+                    mostValuableTransform = golfBall;
                 }
             }
-
             if (mostValuableTransform == null)
             {
-                mostValuableTransform = GolfCart.transform;
                 remainingGolfBalls.Clear();
+                OptimalPath.Add(GolfCart.transform);
+                return;
             }
+            else
+            {
+                remainingGolfBalls.Remove(mostValuableTransform);
+                OptimalPath.Add(mostValuableTransform.transform);
 
-            Debug.Log(mostValuableTransform.name, mostValuableTransform);
-
-            OptimalPath.Add(mostValuableTransform);
-            if (mostValuableTransform.TryGetComponent(out GolfBall gb))
-                remainingGolfBalls.Remove(gb);
-
+            }
 
         }
     }
@@ -193,29 +203,15 @@ public class NPCMovement : MonoBehaviour
         float healthLossPerUnitDistance = GetHealthLossPerUnitDistance(moveSpeed);
         // Topa ulaşma mesafesi
         float distanceToPoint = GetPathDistance(transform.position, point.position);
-        if (distanceToPoint == float.MaxValue) return float.MaxValue;
 
         float healthLossToBall = distanceToPoint * healthLossPerUnitDistance + healthLossOnPickUpAnim;
-        Debug.Log($"currentBestScore:{healthLossToBall}");
 
         // Arabaya dönüş mesafesi
         float distanceToCart = GetPathDistance(point.position, GolfCart.transform.position);
-        if (distanceToCart == float.MaxValue) return float.MaxValue;
 
         float healthLossToCart = distanceToCart * healthLossPerUnitDistance + healthLossOnDropAnim;
-        Debug.Log($"currentBestScore:{healthLossToCart}");
 
         return healthLossToBall + healthLossToCart;
-    }
-
-    private Vector3 GetPointPositionOnNavMesh(Vector3 value)
-    {
-        NavMeshHit navMeshHit;
-        if (NavMesh.SamplePosition(value, out navMeshHit, float.MaxValue, 0))
-        {
-            return value;
-        }
-        return navMeshHit.position;
     }
 
     void OnDrawGizmos()
