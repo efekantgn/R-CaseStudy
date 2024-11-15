@@ -73,34 +73,6 @@ public class NPCMovement : MonoBehaviour
         OnStopMoving?.Invoke();
     }
 
-    public Transform GetOptimalGolfBall()
-    {
-        GolfBall optimalBall = null;
-        float bestScore = float.MinValue;
-        float healthLossOnPickUpAnim = animationController.GetTimeAnimationClip("Picking Up") * healthController.GetDrainRate();
-        float healthLossOnDropAnim = animationController.GetTimeAnimationClip("Drop") * healthController.GetDrainRate();
-
-        foreach (GolfBall ball in Spawner.SpawnedObjects)
-        {
-            float healthLossToBall = GetPathDistance(transform.position, ball.transform.position) * GetHealthLossPerUnitDistance(moveSpeed);
-
-            float healthLossToCart = GetPathDistance(ball.transform.position, GolfCart.transform.position) * GetHealthLossPerUnitDistance(moveSpeed);
-
-            float totalHealthLoss = healthLossToBall + healthLossToCart + healthLossOnDropAnim + healthLossOnPickUpAnim;
-
-            if (totalHealthLoss > healthController.GetCurrentHealth()) continue;
-
-            float score = ball.BallScore / totalHealthLoss;
-
-            if (score > bestScore)
-            {
-                bestScore = score;
-                optimalBall = ball;
-            }
-        }
-        return optimalBall.transform;
-    }
-
     public float GetHealthLossPerUnitDistance(float movementSpeed)
     {
         return healthController.GetDrainRate() / movementSpeed;
